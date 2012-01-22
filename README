@@ -1,0 +1,21 @@
+#Stag
+
+A dead-simple static site generator in Python.
+
+##Goals
+
+The main goal of stag is to be simple enough to use and digest with minimal
+hand holding.  I (like lots of developers) am really attracted to the idea of
+writing blogs/websites in just regular text.
+
+Not all websites need a database.  My perosnal site is a great example.  I
+simply want a place to post articles about the projects I'm working on and tell
+the world a little about me.  In order to do this I want to take down any extra
+walls that keep me from doing this effictively and often.
+
+###Requirements
+
+I prefer to write in vim and markdown.  So, I want to build this entire project
+with only a single external dependency, markdown.  It might be nice later to
+add support for a templating engine like jinja, etc.  However, I want to see if
+I can get by with even less first.
