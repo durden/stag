@@ -6,40 +6,44 @@ Module to provide creation of a static HTML website
 
 import os
 import argparse
+import markdown
 
 
-def get_markdown_files(content_dir, md_files):
-    """Get a list of all the markdown files in given directory"""
+def generate(src_dir, dest_dir):
+    """"""
 
-    for root, dirs, files in os.walk(content_dir):
-        for dir_name in dirs:
-            if dir_name.startswith('.'):
-                continue
+    md = markdown.Markdown()
 
-            md_files[dir_name] = []
-            rel_path = os.path.join(root, dir_name)
-            get_markdown_files(rel_path, md_files)
+    # Make sure directory has os dependent trailing slash
+    src_dir = os.path.normpath(src_dir) + os.sep
+    dest_dir = os.path.normpath(dest_dir) + os.sep
+
+    for root, dirs, files in os.walk(src_dir):
+        gen_dir = os.path.join(dest_dir, os.path.basename(root))
+
+        try:
+            os.makedirs(gen_dir)
+        except OSError:
+            # Already exists
+            pass
 
         for file_name in files:
-            if file_name.startswith('.'):
+            if not file_name.endswith(''.join([os.extsep, 'md'])):
                 continue
 
-            if file_name.endswith('.md'):
-                dir_name = os.path.basename(content_dir)
-
-                try:
-                    md_files[dir_name].append(file_name)
-                # Directory with no subdirectories
-                except KeyError:
-                    md_files[dir_name] = []
-                    md_files[dir_name].append(file_name)
-
-        return md_files
+            # We're going to write to the same filename just swap .md for .html
+            dest_file = ''.join([file_name.split(os.extsep)[0], os.extsep,
+                                'html'])
+            md.convertFile(os.path.join(root, file_name),
+                           os.path.join(gen_dir, dest_file))
 
 
 def main(content_dir):
     """main"""
 
+    # Get all markdown files organized by subdirectory
+    generate(args.content_dir, '_static')
+    #print get_markdown_files(args.content_dir, {})
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Static website generator')
@@ -47,4 +51,4 @@ if __name__ == "__main__":
                         help='Full path to main directory of markdown content')
     args = parser.parse_args()
 
-    print get_markdown_files(args.content_dir, {})
+    main(args.content_dir)
