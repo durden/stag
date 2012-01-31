@@ -39,17 +39,17 @@ def generate(src_dir, dest_dir):
                            os.path.join(gen_dir, dest_file))
 
 
-def main(content_dir):
+def main():
     """main"""
+
+    parser = argparse.ArgumentParser(description='Static website generator')
+    parser.add_argument('content_dir', type=str,
+                        help='Full path to main directory of markdown content')
+    args = parser.parse_args()
 
     # Get all markdown files organized by subdirectory
     generate(args.content_dir, '_static')
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Static website generator')
-    parser.add_argument('content_dir', type=str,
-                        help='Full path to main directory of markdown content')
-    args = parser.parse_args()
-
-    main(args.content_dir)
+    main()
