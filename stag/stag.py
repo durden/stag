@@ -10,7 +10,7 @@ import markdown
 
 
 def generate(src_dir, dest_dir):
-    """"""
+    """Generate html from markdown files in src_dir and place in dest_dir"""
 
     md = markdown.Markdown()
 
@@ -31,7 +31,7 @@ def generate(src_dir, dest_dir):
             if not file_name.endswith(''.join([os.extsep, 'md'])):
                 continue
 
-            # We're going to write to the same filename just swap .md for .html
+            # Write to the same filename just swap .md for .html
             dest_file = ''.join([file_name.split(os.extsep)[0], os.extsep,
                                 'html'])
             md.convertFile(os.path.join(root, file_name),
@@ -43,7 +43,7 @@ def main(content_dir):
 
     # Get all markdown files organized by subdirectory
     generate(args.content_dir, '_static')
-    #print get_markdown_files(args.content_dir, {})
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Static website generator')
