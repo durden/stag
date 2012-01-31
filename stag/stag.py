@@ -7,6 +7,7 @@ Module to provide creation of a static HTML website
 import os
 import argparse
 import markdown
+import string
 
 
 def generate(src_dir, dest_dir):
@@ -19,7 +20,7 @@ def generate(src_dir, dest_dir):
     dest_dir = os.path.normpath(dest_dir) + os.sep
 
     for root, dirs, files in os.walk(src_dir):
-        gen_dir = os.path.join(dest_dir, os.path.basename(root))
+        gen_dir = string.replace(root, root.split('/')[0], dest_dir)
 
         try:
             os.makedirs(gen_dir)
