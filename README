@@ -2,7 +2,17 @@
 
 A dead-simple static site generator in Python.
 
-##Goals
+##Install and run
+
+    1. Get code: git clone git://github.com/durden/stag.git
+    2. Install requirements: pip install -r stag/requirements.txt
+    3. Install projet::pip install stag/
+    4. Run tests: nosetests stag/
+    5. Generate site: stag/stag.py <my_markdown_directory>
+
+###Philosophy
+
+####Goals
 
 The main goal of stag is to be simple enough to use and digest with minimal
 hand holding.  I (like lots of developers) am really attracted to the idea of
@@ -21,7 +31,7 @@ from the file system (timestamps, directory layout, etc.) to build a website.
 Stag strives to require very little configuration from the user and is built in
 the 'convention over configuration' development style.
 
-###Requirements
+####Requirements
 
 I prefer to write in vim and markdown.  So, I want to build this entire project
 with only a single external dependency, markdown.  It might be nice later to
@@ -29,7 +39,7 @@ add support for a templating engine like jinja, etc.  However, I want to see if
 I can get by with even less first.
 
 
-####Usage
+#####Usage
 
 Stag is meant to be run with a single argument, the root directory of the
 markdown files that will provide the site content.
@@ -53,17 +63,18 @@ Stag assumes the following information about the root directory, layout, etc.:
 These assumptions are best explained with a simple example.  Given the
 following directory layout (assume sorted by timestamp, newest first):
 
-mysite/
-    about.md
-    contact.md
-    mysite.md
-    blog/
-        new_article.md
-        article3.md
-        article2.md
-        article1.md
+    mysite/
+        about.md
+        contact.md
+        mysite.md
+        blog/
+            new_article.md
+            article3.md
+            article2.md
+            article1.md
 
 This directory will yield a website with the following link layout:
+
     /mysite.html
     /about.html
     /contact.html
