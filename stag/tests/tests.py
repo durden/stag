@@ -15,15 +15,13 @@ class GenerateTests(unittest.TestCase):
 
     def setUp(self):
         """setup"""
+        pass
 
-        self.src_dir = '_test_site/'
-        self.dest_dir = '_test_gen/'
+    def generateAndCheck(self):
+        """Generate site and verify all files exist"""
 
-    def test_create_identical_structure(self):
-        """
-        Verify all .md files in src path are in identical place as a .html file
-        in dest path
-        """
+        self.assertTrue(os.path.isdir(self.src_dir),
+                                                'Missing %s' % (self.src_dir))
 
         stag.generate(self.src_dir, self.dest_dir)
 
@@ -37,6 +35,27 @@ class GenerateTests(unittest.TestCase):
                 gen_file = os.path.normpath(re.sub('.md', '.html', gen_file))
                 self.assertTrue(os.path.isfile(gen_file),
                                                     'Missing %s' % gen_file)
+
+    def test_generate_abs_path(self):
+        """
+        Verify all .md files in src path are in identical place as a .html file
+        in absolute dest path
+        """
+
+        install_dir = os.path.dirname(stag.__file__)
+        self.src_dir = os.path.join(install_dir, 'tests', '_test_site')
+        self.dest_dir = os.path.join(install_dir, 'tests', '_gen_site')
+        self.generateAndCheck()
+
+    def test_generate_rel_path(self):
+        """
+        Verify all .md files in src path are in identical place as a .html file
+        in relative dest path
+        """
+
+        self.src_dir = 'stag/tests/_test_site'
+        self.dest_dir = 'stag/tests/_gen_site'
+        self.generateAndCheck()
 
     def tearDown(self):
         """teardown"""

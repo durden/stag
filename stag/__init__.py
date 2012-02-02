@@ -1,0 +1,1 @@
+from stag import generate
