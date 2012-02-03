@@ -30,11 +30,18 @@ class GenerateTests(unittest.TestCase):
 
         for root, dirs, files in os.walk(self.src_dir):
             for file_name in files:
-                gen_file = os.path.join(root, file_name)
-                gen_file = re.sub(root.split('/')[0], self.dest_dir, gen_file)
+                gen_file = re.sub(self.src_dir, self.dest_dir,
+                                                os.path.join(root, file_name))
                 gen_file = os.path.normpath(re.sub('.md', '.html', gen_file))
+
                 self.assertTrue(os.path.isfile(gen_file),
                                                     'Missing %s' % gen_file)
+
+        for root, dirs, files in os.walk(self.dest_dir):
+            for gen_file in files:
+                self.assertTrue(gen_file.endswith('.html'),
+                                                    'Non-html file in output')
+
 
     def test_generate_abs_path(self):
         """
@@ -56,6 +63,13 @@ class GenerateTests(unittest.TestCase):
         self.src_dir = 'stag/tests/_test_site'
         self.dest_dir = 'stag/tests/_gen_site'
         self.generateAndCheck()
+
+    def test_missing_src_dir(self):
+        """Verify missing src directory is handled"""
+
+        self.src_dir = 'this/is/not/a/real/dir'
+        self.dest_dir = 'dest'
+        self.assertTrue(stag.generate(self.src_dir, self.dest_dir) == 0)
 
     def tearDown(self):
         """teardown"""
