@@ -4,10 +4,10 @@
 Module to provide creation of a static HTML website
 """
 
-import os
 import argparse
 import markdown
-import string
+import os
+import re
 
 
 def generate(src_dir, dest_dir):
@@ -15,28 +15,36 @@ def generate(src_dir, dest_dir):
 
     md = markdown.Markdown()
 
-    # Make sure directory has os dependent trailing slash
-    src_dir = os.path.normpath(src_dir) + os.sep
-    dest_dir = os.path.normpath(dest_dir) + os.sep
+    if not os.path.isdir(src_dir):
+        print "Source directory (%s) doesn't exist" % (src_dir)
+        return 0
+
+    # Make sure both paths are either absolute or relative
+    if os.path.isabs(src_dir):
+        dest_dir = os.path.abspath(dest_dir)
+    else:
+        dest_dir = os.path.relpath(dest_dir)
 
     for root, dirs, files in os.walk(src_dir):
-        gen_dir = string.replace(root, root.split('/')[0], dest_dir)
-
-        try:
-            os.makedirs(gen_dir)
-        except OSError:
-            # Already exists
-            pass
-
         for file_name in files:
             if not file_name.endswith(''.join([os.extsep, 'md'])):
                 continue
 
+            # dest file will be same name/location with just dest_dir swapped
+            # out for src_dir
+            src_file = os.path.join(root, file_name)
+            dest_file = re.sub(src_dir, dest_dir, src_file)
+
             # Write to the same filename just swap .md for .html
-            dest_file = ''.join([file_name.split(os.extsep)[0], os.extsep,
+            dest_file = ''.join([dest_file.split(os.extsep)[0], os.extsep,
                                 'html'])
-            md.convertFile(os.path.join(root, file_name),
-                           os.path.join(gen_dir, dest_file))
+            try:
+                os.makedirs(os.path.dirname(dest_file))
+            except OSError:
+                # Already exists
+                pass
+
+            md.convertFile(src_file, dest_file)
 
 
 def main():
