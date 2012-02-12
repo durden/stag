@@ -23,7 +23,7 @@ class GenerateTests(unittest.TestCase):
         self.assertTrue(os.path.isdir(self.src_dir),
                                                 'Missing %s' % (self.src_dir))
 
-        stag.generate(self.src_dir, self.dest_dir)
+        stag.generate(self.src_dir, self.dest_dir, self.header_template)
 
         self.assertTrue(os.path.isdir(self.dest_dir),
                                                 'Missing %s' % (self.dest_dir))
@@ -45,7 +45,6 @@ class GenerateTests(unittest.TestCase):
                 self.assertTrue(gen_file.endswith('.html'),
                                                     'Non-html file in output')
 
-
     def test_generate_abs_path(self):
         """
         Verify all .md files in src path are in identical place as a .html file
@@ -55,6 +54,7 @@ class GenerateTests(unittest.TestCase):
         install_dir = os.path.dirname(stag.__file__)
         self.src_dir = os.path.join(install_dir, 'tests', '_test_site')
         self.dest_dir = os.path.join(install_dir, 'tests', '_gen_site')
+        self.header_template = 'layout/header.html'
         self.generateAndCheck()
 
     def test_generate_rel_path(self):
@@ -65,6 +65,7 @@ class GenerateTests(unittest.TestCase):
 
         self.src_dir = 'stag/tests/_test_site'
         self.dest_dir = 'stag/tests/_gen_site'
+        self.header_template = 'layout/header.html'
         self.generateAndCheck()
 
     def test_missing_src_dir(self):
@@ -72,7 +73,9 @@ class GenerateTests(unittest.TestCase):
 
         self.src_dir = 'this/is/not/a/real/dir'
         self.dest_dir = 'dest'
-        self.assertTrue(stag.generate(self.src_dir, self.dest_dir) == 0)
+        self.header_template = 'layout/header.html'
+        self.assertTrue(stag.generate(self.src_dir, self.dest_dir,
+                                                    self.header_template) == 0)
 
     def tearDown(self):
         """teardown"""

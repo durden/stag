@@ -48,8 +48,9 @@ Stag assumes the following information about the root directory, layout, etc.:
 
 - Any directories/files starting with '.' are ignored.
 - Only files with .md extension will be transformed and included in static
+  generation
 - All .md files at the root directory will be treated as the main parts of the
-  site.
+  website.
 - Each subdirectory is treated as a subset of the main website.
 - Each subdirectory will be represented as a page with links to all it's
   child elements (files within the directory).
