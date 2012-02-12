@@ -7,6 +7,8 @@ import re
 import shutil
 import unittest
 
+import markdown
+
 import stag
 
 
@@ -82,3 +84,51 @@ class GenerateTests(unittest.TestCase):
 
         if os.path.isdir(self.dest_dir):
             shutil.rmtree(self.dest_dir)
+
+
+class ConvertFileTests(unittest.TestCase):
+    """Tests for the convertFile() method"""
+
+    def setUp(self):
+        """setup"""
+        pass
+
+    def test_convert_file(self):
+        """Verify converting a file adds in header template and correct text"""
+
+        md = markdown.Markdown()
+
+        self.src_file = 'stag/tests/_test_site/about.md'
+        self.dest_file = 'about.html'
+        self.header_file = 'header.html'
+
+        header = open(self.header_file, 'w')
+        header_contents = '<html><head><title>Title</title></head><body>'
+        header.write(header_contents)
+        header.close()
+
+        header_text = '<h1>%s</h1>' % (self.dest_file.split('.')[0])
+        src_file_handle = open(self.src_file, 'r')
+        correct_content = ''.join([header_contents, header_text,
+                                        md.convert(src_file_handle.read()),
+                                        '\n'])
+        src_file_handle.close()
+
+        stag.convertFile(self.src_file, self.dest_file, self.header_file)
+
+        dest_file_handle = open(self.dest_file, 'r')
+        gen_content = dest_file_handle.read()
+        dest_file_handle.close()
+
+        self.assertTrue(gen_content == correct_content,
+                    'Generated content: \n%s\n\n Correct content:\n%s\n' % (
+                        gen_content, correct_content))
+
+    def tearDown(self):
+        """teardown"""
+
+        if os.path.isfile(self.dest_file):
+            os.remove(self.dest_file)
+
+        if os.path.isfile(self.header_file):
+            os.remove(self.header_file)
