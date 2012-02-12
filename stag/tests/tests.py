@@ -25,7 +25,7 @@ class GenerateTests(unittest.TestCase):
         self.assertTrue(os.path.isdir(self.src_dir),
                                                 'Missing %s' % (self.src_dir))
 
-        stag.generate(self.src_dir, self.dest_dir, self.header_template)
+        stag.generate(self.src_dir, self.dest_dir, self.templates)
 
         self.assertTrue(os.path.isdir(self.dest_dir),
                                                 'Missing %s' % (self.dest_dir))
@@ -56,7 +56,8 @@ class GenerateTests(unittest.TestCase):
         install_dir = os.path.dirname(stag.__file__)
         self.src_dir = os.path.join(install_dir, 'tests', '_test_site')
         self.dest_dir = os.path.join(install_dir, 'tests', '_gen_site')
-        self.header_template = 'layout/header.html'
+        self.templates = {'header': 'layout/header.html',
+                          'footer': 'layout/footer.html'}
         self.generateAndCheck()
 
     def test_generate_rel_path(self):
@@ -67,7 +68,8 @@ class GenerateTests(unittest.TestCase):
 
         self.src_dir = 'stag/tests/_test_site'
         self.dest_dir = 'stag/tests/_gen_site'
-        self.header_template = 'layout/header.html'
+        self.templates = {'header': 'layout/header.html',
+                          'footer': 'layout/footer.html'}
         self.generateAndCheck()
 
     def test_missing_src_dir(self):
@@ -75,9 +77,10 @@ class GenerateTests(unittest.TestCase):
 
         self.src_dir = 'this/is/not/a/real/dir'
         self.dest_dir = 'dest'
-        self.header_template = 'layout/header.html'
+        self.templates = {'header': 'layout/header.html',
+                          'footer': 'layout/footer.html'}
         self.assertTrue(stag.generate(self.src_dir, self.dest_dir,
-                                                    self.header_template) == 0)
+                                                    self.templates) == 0)
 
     def tearDown(self):
         """teardown"""
@@ -100,9 +103,9 @@ class ConvertFileTests(unittest.TestCase):
 
         self.src_file = 'stag/tests/_test_site/about.md'
         self.dest_file = 'about.html'
-        self.header_file = 'header.html'
+        self.templates = {'header': 'header.html', 'footer': 'footer.html'}
 
-        header = open(self.header_file, 'w')
+        header = open(self.templates['header'], 'w')
         header_contents = '<html><head><title>Title</title></head><body>'
         header.write(header_contents)
         header.close()
@@ -114,7 +117,7 @@ class ConvertFileTests(unittest.TestCase):
                                         '\n'])
         src_file_handle.close()
 
-        stag.convertFile(self.src_file, self.dest_file, self.header_file)
+        stag.convertFile(self.src_file, self.dest_file, self.templates)
 
         dest_file_handle = open(self.dest_file, 'r')
         gen_content = dest_file_handle.read()
@@ -130,5 +133,6 @@ class ConvertFileTests(unittest.TestCase):
         if os.path.isfile(self.dest_file):
             os.remove(self.dest_file)
 
-        if os.path.isfile(self.header_file):
-            os.remove(self.header_file)
+        for template, filename in self.templates.iteritems():
+            if os.path.isfile(filename):
+                os.remove(filename)
