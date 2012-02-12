@@ -30,6 +30,9 @@ class GenerateTests(unittest.TestCase):
 
         for root, dirs, files in os.walk(self.src_dir):
             for file_name in files:
+                if not file_name.endswith(''.join([os.extsep, 'md'])):
+                    continue
+
                 gen_file = re.sub(self.src_dir, self.dest_dir,
                                                 os.path.join(root, file_name))
                 gen_file = os.path.normpath(re.sub('.md', '.html', gen_file))

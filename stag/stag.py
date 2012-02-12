@@ -25,6 +25,10 @@ def generate(src_dir, dest_dir):
     else:
         dest_dir = os.path.relpath(dest_dir)
 
+    # Make sure we have a trailing slashes
+    dest_dir = os.path.normpath(dest_dir) + os.sep
+    src_dir = os.path.normpath(src_dir) + os.sep
+
     for root, dirs, files in os.walk(src_dir):
         for file_name in files:
             if not file_name.endswith(''.join([os.extsep, 'md'])):
