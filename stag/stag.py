@@ -50,7 +50,8 @@ def convertFile(src_file, dest_file, templates):
 
     dest_stream.write(_get_template_html(templates['header']))
     dest_stream.write('<h1>%s</h1>' % dest_file.split(os.extsep)[0])
-    dest_stream.write(html + '\n')
+    dest_stream.write(html)
+    dest_stream.write(_get_template_html(templates['footer']) + '\n')
 
 
 def _normalize_paths(src_dir, dest_dir, templates):

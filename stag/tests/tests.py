@@ -110,11 +110,16 @@ class ConvertFileTests(unittest.TestCase):
         header.write(header_contents)
         header.close()
 
+        footer = open(self.templates['footer'], 'w')
+        footer_contents = '</body></html>'
+        footer.write(footer_contents)
+        footer.close()
+
         header_text = '<h1>%s</h1>' % (self.dest_file.split('.')[0])
         src_file_handle = open(self.src_file, 'r')
         correct_content = ''.join([header_contents, header_text,
                                         md.convert(src_file_handle.read()),
-                                        '\n'])
+                                        footer_contents, '\n'])
         src_file_handle.close()
 
         stag.convertFile(self.src_file, self.dest_file, self.templates)
