@@ -5,13 +5,12 @@ Module to provide creation of a static HTML website
 """
 
 import argparse
-import markdown
 import os
 import re
 
 
-HEADER_TEMPLATE = 'layout/header.html'
-FOOTER_TEMPLATE = 'layout/footer.html'
+HEADER_TEMPLATE = 'header.html'
+FOOTER_TEMPLATE = 'footer.html'
 
 
 # FIXME: Optimize opening templates only once
@@ -34,6 +33,8 @@ def _get_template_html(template):
 def convertFile(src_file, dest_file, templates):
     """Convert src file into html and add in site layout, etc."""
 
+    import markdown
+
     md = markdown.Markdown()
 
     try:
@@ -49,7 +50,8 @@ def convertFile(src_file, dest_file, templates):
         return
 
     dest_stream.write(_get_template_html(templates['header']))
-    dest_stream.write('<h1>%s</h1>' % dest_file.split(os.extsep)[0])
+    dest_stream.write('<h1>%s</h1>' % os.path.basename(dest_file).split(
+                                                                os.extsep)[0])
     dest_stream.write(html)
     dest_stream.write(_get_template_html(templates['footer']) + '\n')
 
@@ -121,10 +123,10 @@ def main():
                         help='Path to main directory of markdown content')
 
     parser.add_argument('-header', type=str, default=HEADER_TEMPLATE,
-                        help='HTML file to use as header template')
+                        help='name of HTML file to use as header template')
 
     parser.add_argument('-footer', type=str, default=FOOTER_TEMPLATE,
-                        help='HTML file to use as footer template')
+                        help='name of HTML file to use as footer template')
 
     args = parser.parse_args()
 
