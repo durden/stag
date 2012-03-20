@@ -1,1 +1,1 @@
-from stag import generate, convertFile
+from stag import generate, convert_file
