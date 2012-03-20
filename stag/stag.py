@@ -7,6 +7,7 @@ Module to provide creation of a static HTML website
 import argparse
 import os
 import re
+import shutil
 
 
 HEADER_TEMPLATE = 'header.html'
@@ -93,24 +94,27 @@ def generate(src_dir, dest_dir, templates):
 
     for root, dirs, files in os.walk(src_dir):
         for file_name in files:
-            if not file_name.endswith(''.join([os.extsep, 'md'])):
-                continue
-
             # dest file will be same name/location with just dest_dir swapped
             # out for src_dir
             src_file = os.path.join(root, file_name)
             dest_file = re.sub(src_dir, dest_dir, src_file)
 
-            # Write to the same filename just swap .md for .html
-            dest_file = ''.join([dest_file.split(os.extsep)[0], os.extsep,
-                                'html'])
+            markdown = file_name.endswith(''.join([os.extsep, 'md']))
+            if markdown:
+                # Write to the same filename just swap .md for .html
+                dest_file = ''.join([dest_file.split(os.extsep)[0], os.extsep,
+                                    'html'])
+
             try:
                 os.makedirs(os.path.dirname(dest_file))
             except OSError:
                 # Already exists
                 pass
 
-            convertFile(src_file, dest_file, templates)
+            if markdown:
+                convertFile(src_file, dest_file, templates)
+            else:
+                shutil.copyfile(src_file, dest_file)
 
 
 def main():
