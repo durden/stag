@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-setup(name='Stag',
+setup(name='stag',
       version='0.1',
       description='Simple, boring static site generator',
       author='Luke Lee',
