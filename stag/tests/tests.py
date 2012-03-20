@@ -90,7 +90,7 @@ class GenerateTests(unittest.TestCase):
 
 
 class ConvertFileTests(unittest.TestCase):
-    """Tests for the convertFile() method"""
+    """Tests for the convert_file() method"""
 
     def setUp(self):
         """setup"""
@@ -122,7 +122,7 @@ class ConvertFileTests(unittest.TestCase):
                                         footer_contents, '\n'])
         src_file_handle.close()
 
-        stag.convertFile(self.src_file, self.dest_file, self.templates)
+        stag.convert_file(self.src_file, self.dest_file, self.templates)
 
         dest_file_handle = open(self.dest_file, 'r')
         gen_content = dest_file_handle.read()
