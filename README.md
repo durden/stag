@@ -5,10 +5,11 @@ A dead-simple static site generator in Python.
 ##Install and run
 
     1. Get code: git clone git://github.com/durden/stag.git
-    2. Install requirements: pip install -r stag/requirements.txt
-    3. Install projet::pip install stag/
+    2. Install requirements: pip install -r requirements.txt
+    3. Install project: pip install .
     4. Run tests: nosetests stag/
-    5. Generate site: stag/stag.py <my_markdown_directory>
+    5. Get help: stag/stag.py --help
+    6. Generate site: stag/stag.py <my_content_directory>
 
 ###Philosophy
 
