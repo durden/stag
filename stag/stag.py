@@ -31,7 +31,7 @@ def _get_template_html(template):
     return handle_html
 
 
-def convertFile(src_file, dest_file, templates):
+def convert_file(src_file, dest_file, templates):
     """Convert src file into html and add in site layout, etc."""
 
     import markdown
@@ -112,7 +112,7 @@ def generate(src_dir, dest_dir, templates):
                 pass
 
             if markdown:
-                convertFile(src_file, dest_file, templates)
+                convert_file(src_file, dest_file, templates)
             else:
                 shutil.copyfile(src_file, dest_file)
 
