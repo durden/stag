@@ -11,9 +11,7 @@ A dead-simple static site generator in Python.
     5. Get help: stag/stag.py --help
     6. Generate site: stag/stag.py <my_content_directory>
 
-###Philosophy
-
-####Goals
+###Goals
 
 The main goal of stag is to be simple enough to use and digest with minimal
 hand holding.  I (like lots of developers) am really attracted to the idea of
@@ -32,7 +30,7 @@ from the file system (timestamps, directory layout, etc.) to build a website.
 Stag strives to require very little configuration from the user and is built in
 the 'convention over configuration' development style.
 
-####Requirements
+###Requirements
 
 I prefer to write in vim and markdown.  So, I want to build this entire project
 with only a single external dependency, markdown.  It might be nice later to
@@ -40,7 +38,7 @@ add support for a templating engine like jinja, etc.  However, I want to see if
 I can get by with even less first.
 
 
-#####Usage
+####Usage
 
 Stag is meant to be run with a single argument, the root directory of the
 markdown files that will provide the site content.
