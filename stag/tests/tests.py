@@ -32,12 +32,19 @@ class GenerateTests(unittest.TestCase):
 
         for root, dirs, files in os.walk(self.src_dir):
             for file_name in files:
-                if not file_name.endswith(''.join([os.extsep, 'md'])):
+                md_ext = ''.join([os.extsep, 'md'])
+                markdown_ext = ''.join([os.extsep, 'markdown'])
+
+                if not file_name.endswith(md_ext) and not \
+                        file_name.endswith(markdown_ext):
                     continue
 
                 gen_file = re.sub(self.src_dir, self.dest_dir,
                                                 os.path.join(root, file_name))
-                gen_file = os.path.normpath(re.sub('.md', '.html', gen_file))
+
+                gen_file = os.path.normpath(gen_file.replace('.md', '.html'))
+                gen_file = os.path.normpath(gen_file.replace('.markdown',
+                                                                    '.html'))
 
                 self.assertTrue(os.path.isfile(gen_file),
                                                     'Missing %s' % gen_file)

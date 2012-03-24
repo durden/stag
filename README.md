@@ -48,10 +48,10 @@ markdown files that will provide the site content.
 Stag assumes the following information about the root directory, layout, etc.:
 
 - Any directories/files starting with '.' are ignored.
-- Only files with .md extension will be transformed and included in static
-  generation
-- All .md files at the root directory will be treated as the main parts of the
-  website.
+- Only files with .md or .markdown extensions are considered markdown files.
+- Only markdown files will be transformed and included in static generation
+- All markdown files at the root directory will be treated as the main parts of
+  the website.
 - Each subdirectory is treated as a subset of the main website.
 - Each subdirectory will be represented as a page with links to all it's
   child elements (files within the directory).
@@ -66,14 +66,14 @@ These assumptions are best explained with a simple example.  Given the
 following directory layout (assume sorted by timestamp, newest first):
 
     mysite/
-        about.md
-        contact.md
-        mysite.md
+        about.markdown
+        contact.markdown
+        mysite.markdown
         blog/
-            new_article.md
-            article3.md
-            article2.md
-            article1.md
+            new_article.markdown
+            article3.markdown
+            article2.markdown
+            article1.markdown
 
 This directory will yield a website with the following link layout:
 

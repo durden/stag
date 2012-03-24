@@ -13,6 +13,7 @@ import shutil
 HEADER_TEMPLATE = 'header.html'
 FOOTER_TEMPLATE = 'footer.html'
 
+MARKDOWN_FILE_EXTENSIONS = ['md', 'markdown']
 
 # FIXME: Optimize opening templates only once
 
@@ -99,11 +100,15 @@ def generate(src_dir, dest_dir, templates):
             src_file = os.path.join(root, file_name)
             dest_file = re.sub(src_dir, dest_dir, src_file)
 
-            markdown = file_name.endswith(''.join([os.extsep, 'md']))
-            if markdown:
-                # Write to the same filename just swap .md for .html
-                dest_file = ''.join([dest_file.split(os.extsep)[0], os.extsep,
-                                    'html'])
+            markdown_file = False
+            for extension in MARKDOWN_FILE_EXTENSIONS:
+                if file_name.endswith(''.join([os.extsep, extension])):
+                    # Write to same filename just swap markdown extension for
+                    # .html
+                    dest_file = ''.join([dest_file.split(os.extsep)[0],
+                                                            os.extsep, 'html'])
+                    markdown_file = True
+                    break
 
             try:
                 os.makedirs(os.path.dirname(dest_file))
@@ -111,7 +116,7 @@ def generate(src_dir, dest_dir, templates):
                 # Already exists
                 pass
 
-            if markdown:
+            if markdown_file:
                 convert_file(src_file, dest_file, templates)
             else:
                 shutil.copyfile(src_file, dest_file)
