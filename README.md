@@ -47,7 +47,8 @@ Stag assumes the following information about the root directory, layout, etc.:
 
 - Any directories/files starting with '.' are ignored.
 - Only files with .md or .markdown extensions are considered markdown files.
-- Only markdown files will be transformed and included in static generation
+- Only markdown files will be transformed into html.
+- All non-markdown files will be copied into the static site.
 - All markdown files at the root directory will be treated as the main parts of
   the website.
 - Each subdirectory is treated as a subset of the main website.
