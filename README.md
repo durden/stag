@@ -48,9 +48,12 @@ Stag assumes the following information about the root directory, layout, etc.:
 - Any directories/files starting with '.' are ignored.
 - Only files with .md or .markdown extensions are considered markdown files.
 - Only markdown files will be transformed into html.
-- All non-markdown files will be copied into the static site.
+- All non-markdown files will be copied into the static site without changes.
 - All markdown files at the root directory will be treated as the main parts of
   the website.
+- If a directory does not have an index.html file, one will be generated for it
+  that will simply contain a list of all the 'articles' aka files under the
+  directory.
 - Each subdirectory is treated as a subset of the main website.
 - Each subdirectory will be represented as a page with links to all it's
   child elements (files within the directory).
@@ -76,10 +79,10 @@ following directory layout (assume sorted by timestamp, newest first):
 
 This directory will yield a website with the following link layout:
 
-    /mysite.html
+    /index.html
     /about.html
     /contact.html
-    /blog/blog.html (Contains links for all articles)
+    /blog/index.html (Contains links for all articles)
         /blog/new-article.html
         /blog/article3.html
         /blog/article2.html

@@ -32,6 +32,48 @@ def _get_template_html(template):
     return handle_html
 
 
+def _is_markdown_file(file_name):
+    """Determine if given file is a markdown file"""
+
+    for extension in MARKDOWN_FILE_EXTENSIONS:
+        if file_name.endswith(''.join([os.extsep, extension])):
+            # Write to same filename just swap markdown extension for
+            # .html
+            file_name = ''.join([file_name.split(os.extsep)[0],
+                                                    os.extsep, 'html'])
+            return True
+
+    return False
+
+
+def _generate_title(file_name):
+    """Generate a title name from file_name"""
+
+    return file_name.replace('_', ' ')
+
+
+def _generate_link(file_name):
+    """Generate a link from file_name"""
+
+    return file_name.replace('_', '-')
+
+
+def _generate_index_file(directory):
+    """
+    Generate a generic index file for the given directory that lists it's
+    contents
+    """
+
+    links = []
+    for root, dirs, files in os.walk(directory):
+        for file_name in files:
+
+            # FIXME: This needs to know how nested the given directory is so we
+            # can generate a valid link
+            if _is_markdown_file(file_name):
+                links.append(_generate_title(file_name))
+
+
 def convert_file(src_file, dest_file, templates):
     """Convert src file into html and add in site layout, etc."""
 
@@ -94,21 +136,33 @@ def generate(src_dir, dest_dir, templates):
                                                                     templates)
 
     for root, dirs, files in os.walk(src_dir):
+        for directory in dirs:
+
+            # FIXME: Use a list/regex here
+            md_index = os.path.join(root, directory, 'index.md')
+            markdown_index = os.path.join(root, directory, 'index.markdown')
+
+            full_dir_path = os.path.join(root, directory)
+            if os.path.exists(md_index) and os.path.exists(markdown_index):
+                raise IOError("Two index files exists for '%s'" % (
+                                                                full_dir_path))
+
+            if not os.path.exists(md_index) and \
+               not os.path.exists(markdown_index):
+                _generate_index_file(os.path.join(root, directory))
+
         for file_name in files:
             # dest file will be same name/location with just dest_dir swapped
             # out for src_dir
             src_file = os.path.join(root, file_name)
             dest_file = re.sub(src_dir, dest_dir, src_file)
 
-            markdown_file = False
-            for extension in MARKDOWN_FILE_EXTENSIONS:
-                if file_name.endswith(''.join([os.extsep, extension])):
-                    # Write to same filename just swap markdown extension for
-                    # .html
-                    dest_file = ''.join([dest_file.split(os.extsep)[0],
-                                                            os.extsep, 'html'])
-                    markdown_file = True
-                    break
+            markdown_file = _is_markdown_file(src_file)
+            if markdown_file:
+                # Write to same filename just swap markdown extension for
+                # .html
+                dest_file = ''.join([dest_file.split(os.extsep)[0],
+                                                        os.extsep, 'html'])
 
             try:
                 os.makedirs(os.path.dirname(dest_file))
