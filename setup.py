@@ -9,4 +9,7 @@ setup(name='stag',
       author_email='durdenmisc@gmail.com',
       url='http://github.com/durden/stag',
       packages=['stag'],
+      entry_points={
+          'console_scripts': ['stag = stag.stag:main']
+      }
     )

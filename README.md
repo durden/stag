@@ -8,8 +8,8 @@ A dead-simple static site generator in Python.
     2. Install requirements: pip install -r requirements.txt
     3. Install project: pip install .
     4. Run tests: nosetests stag/
-    5. Get help: stag/stag.py --help
-    6. Generate site: stag/stag.py <my_content_directory>
+    5. Get help: stag --help
+    6. Generate site: stag <my_content_directory>
 
 ###Goals
 
