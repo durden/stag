@@ -12,6 +12,7 @@ import shutil
 
 HEADER_TEMPLATE = 'header.html'
 FOOTER_TEMPLATE = 'footer.html'
+OUTPUT_DIR = '_static'
 
 MARKDOWN_FILE_EXTENSIONS = ['md', 'markdown']
 
@@ -191,12 +192,21 @@ def main():
     parser.add_argument('-footer', type=str, default=FOOTER_TEMPLATE,
                         help='name of HTML file to use as footer template')
 
+    parser.add_argument('-overwrite', action='store_true',
+                        help='Overwrite output _static directory if exists')
+
+    parser.add_argument('-output_dir', type=str, default=OUTPUT_DIR,
+                        help='Directory to output site to')
+
     args = parser.parse_args()
 
     templates = {'header': args.header, 'footer': args.footer}
 
+    if args.overwrite:
+        shutil.rmtree(args.output_dir)
+
     # Get all markdown files organized by subdirectory
-    generate(args.content_dir, '_static', templates)
+    generate(args.content_dir, args.output_dir, templates)
 
 
 if __name__ == "__main__":
